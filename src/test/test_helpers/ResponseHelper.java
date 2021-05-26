@@ -25,19 +25,20 @@ public class ResponseHelper {
     }
 
     public ResponseHelper expectDevice(String type, String id, double position) {
-        return expectDevice(type, id, position, false, new LocalTime[][]{});
+        return expectDevice(type, id, position, false, new LocalTime[][] {});
     }
 
-    public ResponseHelper expectDevice(String type, String id, double position, boolean isConnected, LocalTime[][] times) {
+    public ResponseHelper expectDevice(String type, String id, double position, boolean isConnected,
+            LocalTime[][] times) {
         JSONArray periods = new JSONArray();
-        
+
         for (int i = 0; i < times.length; i++) {
             JSONObject time = new JSONObject();
             time.put("startTime", times[i][0].toString());
             time.put("endTime", times[i][1].toString());
             periods.put(time);
         }
-        
+
         JSONObject device = new JSONObject();
         device.put("id", id);
         device.put("type", type);
@@ -49,7 +50,8 @@ public class ResponseHelper {
         return this;
     }
 
-    public ResponseHelper expectSatellite(String type, String id, double height, double position, double velocity, String[] possibleConnections, DummyConnection[] connections) {
+    public ResponseHelper expectSatellite(String type, String id, double height, double position, double velocity,
+            String[] possibleConnections, DummyConnection[] connections) {
         JSONObject satellite = new JSONObject();
         satellite.put("id", id);
         satellite.put("type", type);
@@ -73,7 +75,9 @@ public class ResponseHelper {
         return this;
     }
 
-    public ResponseHelper expectSatellite(String type, String id, double height, double position, double velocity, String[] possibleConnections) {
-        return this.expectSatellite(type, id, height, position, velocity, possibleConnections, new DummyConnection[]{});
+    public ResponseHelper expectSatellite(String type, String id, double height, double position, double velocity,
+            String[] possibleConnections) {
+        return this.expectSatellite(type, id, height, position, velocity, possibleConnections,
+                new DummyConnection[] {});
     }
 }

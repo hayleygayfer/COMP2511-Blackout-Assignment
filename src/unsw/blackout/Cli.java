@@ -34,7 +34,7 @@ public class Cli {
 
     /// There is no need to change this function, please don't change this
     /// If you change this there is a good chance you'll break something...
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         Cli system = new Cli();
         system.run(args);
     }
@@ -61,6 +61,7 @@ public class Cli {
             // Recommendation: Don't store *any* state in Cli class EXCEPT for the Blackout class (or whatever you want to call it).
             break;
         }
+        // TODO: Handle the rest...
         default:
             throw new UnsupportedOperationException(
                     String.format("%s is not currently implemented.", json.getString("command")));
@@ -68,6 +69,7 @@ public class Cli {
     }
 
     /// DON'T TOUCH ANY CODE BELOW THIS POINT
+    ///
     /// this code is so you get a nice command line interface to make it easier
     /// for you to test / develop, it supports both a human readable command line
     /// i.e. createDevice DesktopDevice MyDevice 40.5 as well as the JSON equivalent
@@ -77,7 +79,7 @@ public class Cli {
     /// Code has been documented well for your curiosity and intrigue and while it
     /// would be good for you
     /// to read through this all; you aren't required to understand / know this for
-    /// this assignment.
+    /// this assignment.  If you do not understand this don't fret.
     ///
     /// The documentation provided here is excessively verbose as to help those
     /// who are newer to the language and are struggling to understand some of the
