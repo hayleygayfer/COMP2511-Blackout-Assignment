@@ -175,7 +175,7 @@ public class TestHelper {
     public TestHelper scheduleDeviceActivation(String id, LocalTime start, int durationInMinutes) {
         validateId(id);
         commands.add(String.format(
-                "{ \"command\": \"scheduleDeviceActivation\", \"deviceId\": \"%s\", \"start\": \"%s\", \"durationInMinutes\": %d }",
+                "{ \"command\": \"scheduleDeviceActivation\", \"deviceId\": \"%s\", \"startTime\": \"%s\", \"durationInMinutes\": %d }",
                 id, start.toString(), durationInMinutes));
         return this;
     }
