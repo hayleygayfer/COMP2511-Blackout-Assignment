@@ -46,7 +46,7 @@ switch (json.getString("command")) {
             String id = json.getString("id");
             String deviceType = json.getString("type");
             double position = json.getDouble("position");
-            blackout.addDevice(id, deviceType, position);
+            blackout.createDevice(id, deviceType, position);
             break;
         }
         case "createSatellite": {
@@ -55,7 +55,7 @@ switch (json.getString("command")) {
             double height = json.getDouble("height");
             double position = json.getDouble("position");
 
-            blackout.addSatellite(id, satelliteType, height, position);
+            blackout.createSatellite(id, satelliteType, height, position);
             break;
         }
         case "scheduleDeviceActivation": {

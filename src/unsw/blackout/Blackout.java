@@ -1,11 +1,11 @@
 package unsw.blackout;
 
 public class Blackout {
-    public void addDevice(String id, String type, double position) {
+    public void createDevice(String id, String type, double position) {
         // TODO:
     }
 
-    public void addSatellite(String id, String type, double height, double position) {
+    public void createSatellite(String id, String type, double height, double position) {
         // TODO:
     }
 
