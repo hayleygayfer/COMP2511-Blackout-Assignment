@@ -41,14 +41,12 @@ public class Cli {
 
     /// Processes a given command.
     public void processCommand(JSONObject json) {
-        switch (json.getString("command")) {
+switch (json.getString("command")) {
         case "createDevice": {
             String id = json.getString("id");
             String deviceType = json.getString("type");
             double position = json.getDouble("position");
-
-            // TODO: Actually add this device...
-            // Recommendation: Don't store *any* state in Cli class EXCEPT for the Blackout class (or whatever you want to call it).
+            blackout.addDevice(id, deviceType, position);
             break;
         }
         case "createSatellite": {
@@ -57,11 +55,43 @@ public class Cli {
             double height = json.getDouble("height");
             double position = json.getDouble("position");
 
-            // TODO: Actually add this satellite...
-            // Recommendation: Don't store *any* state in Cli class EXCEPT for the Blackout class (or whatever you want to call it).
+            blackout.addSatellite(id, satelliteType, height, position);
             break;
         }
-        // TODO: Handle the rest...
+        case "scheduleDeviceActivation": {
+            LocalTime start = LocalTime.parse(json.getString("startTime"), DateTimeFormatter.ofPattern("HH:mm"));
+            int duration = json.getInt("durationInMinutes");
+            String deviceId = json.getString("deviceId");
+
+            blackout.addActivationPeriod(deviceId, start, duration);
+            break;
+        }
+        case "removeDevice": {
+            String id = json.getString("id");
+
+            blackout.removeDevice(id);
+            break;
+        }
+        case "moveDevice": {
+            String id = json.getString("id");
+            double newPos = json.getDouble("newPosition");
+
+            blackout.moveDevice(id, newPos);
+            break;
+        }
+        case "removeSatellite":
+            String id = json.getString("id");
+
+            blackout.removeSatellite(id);
+            break;
+        case "showWorldState":
+            System.out.println(blackout.show().toString(0));
+            break;
+        case "simulate": {
+            int minutes = json.getInt("durationInMinutes");
+            blackout.tick(minutes);
+            break;
+        }
         default:
             throw new UnsupportedOperationException(
                     String.format("%s is not currently implemented.", json.getString("command")));
