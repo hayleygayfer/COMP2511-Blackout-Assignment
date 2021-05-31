@@ -63,7 +63,7 @@ switch (json.getString("command")) {
             int duration = json.getInt("durationInMinutes");
             String deviceId = json.getString("deviceId");
 
-            blackout.addActivationPeriod(deviceId, start, duration);
+            blackout.scheduleDeviceActivation(deviceId, start, duration);
             break;
         }
         case "removeDevice": {
@@ -85,11 +85,11 @@ switch (json.getString("command")) {
             blackout.removeSatellite(id);
             break;
         case "showWorldState":
-            System.out.println(blackout.show().toString(0));
+            System.out.println(blackout.showWorldState().toString(0));
             break;
         case "simulate": {
             int minutes = json.getInt("durationInMinutes");
-            blackout.tick(minutes);
+            blackout.simulate(minutes);
             break;
         }
         default:

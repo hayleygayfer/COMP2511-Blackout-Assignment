@@ -9,7 +9,7 @@ public class Blackout {
         // TODO:
     }
 
-    public void addActivationPeriod(String deviceId, LocalTime start, int durationInMinutes) {
+    public void scheduleDeviceActivation(String deviceId, LocalTime start, int durationInMinutes) {
         // TODO:
     }
 
@@ -25,7 +25,7 @@ public class Blackout {
         // TODO:
     }
 
-    public JSONObject show() {
+    public JSONObject showWorldState() {
         JSONObject result = new JSONObject();
         JSONArray devices = new JSONArray();
         JSONArray satellites = new JSONArray();
@@ -41,7 +41,7 @@ public class Blackout {
         return result;
     }
 
-    public void tick(int tickDurationInMinutes) {
+    public void simulate(int tickDurationInMinutes) {
         // TODO:
     }
 }
