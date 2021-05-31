@@ -22,7 +22,7 @@ import org.json.JSONObject;
  * @author Braedon Wooding & Nick Patrikeos
  */
 public class Cli {
-    Blackout blackout;
+    private Blackout blackout;
 
     // recommendation: Don't add any extra state here, it's not good design to expose your inner workings to any Cli frontends.
 
