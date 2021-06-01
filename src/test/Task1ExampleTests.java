@@ -23,8 +23,10 @@ public class Task1ExampleTests {
                 // so 141.66 == 141.67.
                 .expectSatellite("BlueOriginSatellite", "Satellite1", 10000, 340, 141.66,
                         /* Possible Connections */ new String[] { "DeviceA", "DeviceC" })
-                .expectDevice("HandheldDevice", "DeviceA", 30).expectDevice("LaptopDevice", "DeviceB", 180)
-                .expectDevice("DesktopDevice", "DeviceC", 330).toString();
+                .expectDevice("HandheldDevice", "DeviceA", 30)
+                .expectDevice("LaptopDevice", "DeviceB", 180)
+                .expectDevice("DesktopDevice", "DeviceC", 330)
+                .toString();
 
         // this is what we call the 'builder' pattern, effectively we scope out a test
         // plan in this case
@@ -40,20 +42,25 @@ public class Task1ExampleTests {
         // Unsure what a function does? Just mouse over it, and you'll get a nice
         // description including sample json output.
         TestHelper plan = new TestHelper().createDevice("HandheldDevice", "DeviceA", 30)
-                .createDevice("LaptopDevice", "DeviceB", 180).createDevice("DesktopDevice", "DeviceC", 330)
-                .createSatellite("BlueOriginSatellite", "Satellite1", 10000, 340).showWorldState(initialWorldState);
+            .createDevice("LaptopDevice", "DeviceB", 180)
+            .createDevice("DesktopDevice", "DeviceC", 330)
+            .createSatellite("BlueOriginSatellite", "Satellite1", 10000, 340)
+            .showWorldState(initialWorldState);
 
         // Then after moving DeviceA to theta = 211 the world state should be
         String afterMoveWorldState = new ResponseHelper(LocalTime.of(0, 0))
-                .expectSatellite("BlueOriginSatellite", "Satellite1", 10000, 340, 141.66, new String[] { "DeviceC" })
-                .expectDevice("HandheldDevice", "DeviceA", 211) // position has changed
-                .expectDevice("LaptopDevice", "DeviceB", 180).expectDevice("DesktopDevice", "DeviceC", 330).toString();
+            .expectSatellite("BlueOriginSatellite", "Satellite1", 10000, 340, 141.66, new String[] { "DeviceC" })
+            .expectDevice("HandheldDevice", "DeviceA", 211) // position has changed
+            .expectDevice("LaptopDevice", "DeviceB", 180)
+            .expectDevice("DesktopDevice", "DeviceC", 330)
+            .toString();
 
         plan = plan.moveDevice("DeviceA", 211).showWorldState(afterMoveWorldState);
 
         String afterRemovingWorldState = new ResponseHelper(LocalTime.of(0, 0))
                 .expectSatellite("BlueOriginSatellite", "Satellite1", 10000, 340, 141.66, new String[] { "DeviceC" })
-                .expectDevice("HandheldDevice", "DeviceA", 211).expectDevice("DesktopDevice", "DeviceC", 330)
+                .expectDevice("HandheldDevice", "DeviceA", 211)
+                .expectDevice("DesktopDevice", "DeviceC", 330)
                 // notice no B
                 .toString();
 
