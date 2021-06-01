@@ -67,6 +67,7 @@ public class ResponseHelper {
             item.put("startTime", connection.getStartTime());
             item.put("endTime", connection.getEndTime() == null ? JSONObject.NULL : connection.getEndTime());
             item.put("deviceId", connection.getDeviceId());
+            item.put("minutesActive", connection.getMinutesActive());
             conns.put(item);
         }
 

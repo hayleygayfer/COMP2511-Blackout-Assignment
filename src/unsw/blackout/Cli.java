@@ -1,6 +1,5 @@
 package unsw.blackout;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.time.LocalTime;
@@ -24,7 +23,8 @@ import org.json.JSONObject;
 public class Cli {
     private Blackout blackout;
 
-    // recommendation: Don't add any extra state here, it's not good design to expose your inner workings to any Cli frontends.
+    // recommendation: Don't add any extra state here, it's not good design to
+    // expose your inner workings to any Cli frontends.
 
     public Cli() {
         // feel free to change this to point to whatever class you want to point it to
@@ -41,7 +41,7 @@ public class Cli {
 
     /// Processes a given command.
     public void processCommand(JSONObject json) {
-switch (json.getString("command")) {
+        switch (json.getString("command")) {
         case "createDevice": {
             String id = json.getString("id");
             String deviceType = json.getString("type");
@@ -109,7 +109,7 @@ switch (json.getString("command")) {
     /// Code has been documented well for your curiosity and intrigue and while it
     /// would be good for you
     /// to read through this all; you aren't required to understand / know this for
-    /// this assignment.  If you do not understand this don't fret.
+    /// this assignment. If you do not understand this don't fret.
     ///
     /// The documentation provided here is excessively verbose as to help those
     /// who are newer to the language and are struggling to understand some of the
@@ -220,14 +220,17 @@ switch (json.getString("command")) {
             this.description = description;
         }
 
-        // a lot of modern languages allow us to do what is called 'generic specialisation'
-        // i.e. we could say <String>addArg(String name) here, the benefit of doing this is
-        //      that we have a single function to call (addArg) and we specialise the type
-        //      rather than having to ad-hoc attach a type suffix here...
+        // a lot of modern languages allow us to do what is called 'generic
+        // specialisation'
+        // i.e. we could say <String>addArg(String name) here, the benefit of doing this
+        // is
+        // that we have a single function to call (addArg) and we specialise the type
+        // rather than having to ad-hoc attach a type suffix here...
         // This is fine though, since Java doesn't support that stuff.
         public CliCommand addStringArg(String name) {
             // a useful way is to use classes like this is to create 'anonymous' classes
-            // this will create a hidden 'special' class that is a subclass of Arg with the function overload.
+            // this will create a hidden 'special' class that is a subclass of Arg with the
+            // function overload.
             // quite nice!
             this.args.add(new Arg(name, "String") {
                 @Override
@@ -247,7 +250,7 @@ switch (json.getString("command")) {
                     } catch (NumberFormatException e) {
                         throw new CliCommandException.CliArgNumberFormatException(this, e);
                     }
-                }  
+                }
             });
             return this;
         }
@@ -261,7 +264,7 @@ switch (json.getString("command")) {
                     } catch (NumberFormatException e) {
                         throw new CliCommandException.CliArgNumberFormatException(this, e);
                     }
-                }  
+                }
             });
             return this;
         }
@@ -276,7 +279,7 @@ switch (json.getString("command")) {
                         throw new CliCommandException.CliArgDateTimeParseException(this, e);
                     }
                     return arg;
-                }  
+                }
             });
             return this;
         }
@@ -448,12 +451,13 @@ switch (json.getString("command")) {
                     } else {
                         System.out.println(String.format("Error %s", e.getMessage()));
                         e.printStackTrace();
-                        
+
                         System.out.println("Dumping world state... (to help debugging)");
                         try {
                             processCommand(parseCommand("showWorldState"));
                         } catch (Exception newE) {
-                            System.out.println(String.format("Failed to dump world state :(... Error %s", e.getMessage()));
+                            System.out.println(
+                                    String.format("Failed to dump world state :(... Error %s", e.getMessage()));
                             newE.printStackTrace();
                         }
                     }

@@ -6,17 +6,20 @@ public class DummyConnection {
     private String deviceId;
     private LocalTime startTime;
     private LocalTime endTime;
+    private int minutesActive;
 
-    public DummyConnection(String deviceId, LocalTime startTime, LocalTime endTime) {
+    public DummyConnection(String deviceId, LocalTime startTime, LocalTime endTime, int minutesActive) {
         this.deviceId = deviceId;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.minutesActive = minutesActive;
     }
 
-    public DummyConnection(String deviceId, LocalTime startTime) {
+    public DummyConnection(String deviceId, LocalTime startTime, int minutesActive) {
         this.deviceId = deviceId;
         this.startTime = startTime;
         this.endTime = null;
+        this.minutesActive = minutesActive;
     }
 
     public String getDeviceId() {
@@ -29,5 +32,9 @@ public class DummyConnection {
 
     public LocalTime getEndTime() {
         return endTime;
+    }
+
+    public int getMinutesActive() {
+        return minutesActive;
     }
 }
