@@ -19,14 +19,14 @@ public class Task1ExampleTests {
         // 2 devices are in view of the satellite
         // 1 device is out of view of the satellite
         String initialWorldState = new ResponseHelper(LocalTime.of(0, 0))
-                // note: all doubles are to 0.01 precision
-                // so 141.66 == 141.67.
-                .expectSatellite("BlueOriginSatellite", "Satellite1", 10000, 340, 141.66,
-                        /* Possible Connections */ new String[] { "DeviceA", "DeviceC" })
-                .expectDevice("HandheldDevice", "DeviceA", 30)
-                .expectDevice("LaptopDevice", "DeviceB", 180)
-                .expectDevice("DesktopDevice", "DeviceC", 330)
-                .toString();
+            // note: all doubles are to 0.01 precision
+            // so 141.66 == 141.67.
+            .expectSatellite("BlueOriginSatellite", "Satellite1", 10000, 340, 141.66,
+                /* Possible Connections */ new String[] { "DeviceA", "DeviceC" })
+            .expectDevice("HandheldDevice", "DeviceA", 30)
+            .expectDevice("LaptopDevice", "DeviceB", 180)
+            .expectDevice("DesktopDevice", "DeviceC", 330)
+            .toString();
 
         // this is what we call the 'builder' pattern, effectively we scope out a test
         // plan in this case
@@ -58,11 +58,11 @@ public class Task1ExampleTests {
         plan = plan.moveDevice("DeviceA", 211).showWorldState(afterMoveWorldState);
 
         String afterRemovingWorldState = new ResponseHelper(LocalTime.of(0, 0))
-                .expectSatellite("BlueOriginSatellite", "Satellite1", 10000, 340, 141.66, new String[] { "DeviceC" })
-                .expectDevice("HandheldDevice", "DeviceA", 211)
-                .expectDevice("DesktopDevice", "DeviceC", 330)
-                // notice no B
-                .toString();
+            .expectSatellite("BlueOriginSatellite", "Satellite1", 10000, 340, 141.66, new String[] { "DeviceC" })
+            .expectDevice("HandheldDevice", "DeviceA", 211)
+            .expectDevice("DesktopDevice", "DeviceC", 330)
+            // notice no B
+            .toString();
 
         plan = plan.removeDevice("DeviceB").showWorldState(afterRemovingWorldState);
 
