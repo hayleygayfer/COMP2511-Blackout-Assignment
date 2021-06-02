@@ -325,7 +325,7 @@ public class Cli {
                         .addStringArg("id"));
         commands.put("scheduleDeviceActivation", new CliCommand("scheduleDeviceActivation",
                 "schedules a device to activate from the given start time for the duration specified (in minutes)")
-                        .addStringArg("deviceId").addTimeArg("start").addIntegerArg("durationInMinutes"));
+                        .addStringArg("deviceId").addTimeArg("startTime").addIntegerArg("durationInMinutes"));
         commands.put("showWorldState", new CliCommand("showWorldState", "shows all devices and satellites"));
         commands.put("simulate", new CliCommand("simulate", "runs the simulation and schedules device activations")
                 .addIntegerArg("durationInMinutes"));
