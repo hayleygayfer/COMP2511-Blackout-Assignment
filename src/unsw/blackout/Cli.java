@@ -434,7 +434,7 @@ public class Cli {
                         e.printStackTrace(new PrintWriter(out));
                         JSONObject jo = new JSONObject();
                         jo.put("type", "error");
-                        jo.put("error", e.getMessage());
+                        jo.put("error", e.getMessage() == null ? e.getClass().getSimpleName() : e.getMessage());
                         jo.put("stack_trace", out.toString());
                         System.out.println(jo.toString(0));
 
@@ -442,9 +442,12 @@ public class Cli {
                         try {
                             processCommand(parseCommand("showWorldState"));
                         } catch (Exception newE) {
+                            // no world state... so we just give you another error object
+                            out = new StringWriter();
+                            newE.printStackTrace(new PrintWriter(out));
                             jo = new JSONObject();
                             jo.put("type", "error");
-                            jo.put("error", e.getMessage());
+                            jo.put("error", newE.getMessage() == null ? newE.getClass().getSimpleName() : newE.getMessage());
                             jo.put("stack_trace", out.toString());
                             System.out.println(jo.toString(0));
                         }
@@ -457,7 +460,7 @@ public class Cli {
                             processCommand(parseCommand("showWorldState"));
                         } catch (Exception newE) {
                             System.out.println(
-                                    String.format("Failed to dump world state :(... Error %s", e.getMessage()));
+                                    String.format("Failed to dump world state :(... Error %s", newE.getMessage()));
                             newE.printStackTrace();
                         }
                     }
