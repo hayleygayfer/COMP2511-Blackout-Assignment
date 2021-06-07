@@ -264,7 +264,7 @@ public class TestHelper {
                                 // the rest of the output will contain world dumps and so on
                                 Assert.fail(String.format(
                                         "Error: %s\n%s\nRest of output (will contain world dump if it exists)%s",
-                                        jo.getString("error"), jo.getString("stack_trace"),
+                                        jo.optString("error", ""), jo.getString("stack_trace"),
                                         rawOutput.substring(lastIndex)));
                             } else {
                                 JSONComparerDoublePrecision.assertEquals(expectedOutput.get(objectIndex), slice, 0.01);
