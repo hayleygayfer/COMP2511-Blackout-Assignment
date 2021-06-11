@@ -342,7 +342,13 @@ public class Cli {
 
         System.out.println("Examples");
         System.out.println("\tcreateDevice DesktopDevice MyDevice 40.5");
-        System.out.println("\tcreateSatellite NasaSatellite MySatellite 3 1000 40.5");
+        System.out.println("\tcreateSatellite NasaSatellite MySatellite 10000 40.5");
+        System.out.println("\tmoveDevice MyDevice");
+        System.out.println("\tremoveDevice MyDevice");
+        System.out.println("\tremoveSatellite MySatellite");
+        System.out.println("\tscheduleDeviceActivation MyDevice 00:00 100");
+        System.out.println("\tshowWorldState");
+        System.out.println("\tsimulate 1440");
 
         System.out.println("\n");
         System.out.println("NOTE: <id> is purely alphanumerical i.e. letter or number");
