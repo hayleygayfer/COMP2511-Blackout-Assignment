@@ -12,9 +12,9 @@ import test.test_helpers.TestHelper;
 @TestInstance(value = Lifecycle.PER_CLASS)
 public class Task2ExtraTests {
     @Test
-    public void testSmallAngle() {
+    public void testSmallId() {
         // Task 2
-        // Smallest 'angle' takes priority over larger ones...
+        // Smallest device ID takes priority over larger ones.
 
         String initialWorldState = new ResponseHelper(LocalTime.of(0, 0))
             .expectSatellite("NasaSatellite", "Satellite1", 10000, 30, 85, new String[] { "DeviceA", "DeviceB", "DeviceC", "DeviceD", "DeviceE", "DeviceF", "DeviceG" })
@@ -26,7 +26,6 @@ public class Task2ExtraTests {
             .expectDevice("LaptopDevice", "DeviceF", 35, false, new LocalTime[][] { { LocalTime.of(0, 0), LocalTime.of(6, 40) } })
             .expectDevice("DesktopDevice", "DeviceG", 36, false, new LocalTime[][] { { LocalTime.of(0, 0), LocalTime.of(6, 40) } })
             .toString();
-        // NASA can only connect to 6 devices so based on 'smallest' angle priority... which one goes first?
 
         // then simulates for a full day (1440 mins)
         String afterADay = new ResponseHelper(LocalTime.of(0, 0))
@@ -67,6 +66,69 @@ public class Task2ExtraTests {
             .scheduleDeviceActivation("DeviceG", LocalTime.of(0, 0), 400)
             .showWorldState(initialWorldState)
             .simulate(1440)
+            .showWorldState(afterADay);
+        plan.executeTestPlan();
+    }
+
+    @Test
+    public void testSmallAngle() {
+        // Task 2
+        // Smallest satellite angle takes priority
+
+        String initialWorldState = new ResponseHelper(LocalTime.of(0, 0))
+            .expectSatellite("NasaSatellite", "Satellite1", 10000, 30, 85, new String[] { "DeviceA" })
+            .expectSatellite("NasaSatellite", "Satellite2", 10000, 50, 85, new String[] { "DeviceA" })
+            .expectSatellite("NasaSatellite", "Satellite3", 10000, 0, 85, new String[] { "DeviceA" })
+            .expectSatellite("NasaSatellite", "Satellite4", 10000, 359, 85, new String[] { "DeviceA" })
+            .expectDevice("HandheldDevice", "DeviceA", 30, false, new LocalTime[][] { { LocalTime.of(0, 0), LocalTime.of(6, 40) }, { LocalTime.of(12, 30), LocalTime.of(19, 10) } })
+            .toString();
+
+        // then simulates for half a day
+        String afterHalfADay = new ResponseHelper(LocalTime.of(12, 0))
+            .expectSatellite("NasaSatellite", "Satellite1", 10000, 36.12, 85,
+                new String[] { "DeviceA" })
+            .expectSatellite("NasaSatellite", "Satellite2", 10000, 56.12, 85,
+                new String[] { "DeviceA" })
+            .expectSatellite("NasaSatellite", "Satellite3", 10000, 6.12, 85,
+                new String[] { "DeviceA" },
+                new DummyConnection[] {
+                    new DummyConnection("DeviceA", LocalTime.of(0, 0), LocalTime.of(6, 41), 390), //
+                })
+            .expectSatellite("NasaSatellite", "Satellite4", 10000, 5.12, 85,
+                new String[] { "DeviceA" })
+            .expectDevice("HandheldDevice", "DeviceA", 30, false, new LocalTime[][] { { LocalTime.of(0, 0), LocalTime.of(6, 40) }, { LocalTime.of(12, 30), LocalTime.of(19, 10) } })
+            .toString();
+
+        String afterADay = new ResponseHelper(LocalTime.of(0, 0))
+            .expectSatellite("NasaSatellite", "Satellite1", 10000, 42.24, 85,
+                new String[] { "DeviceA" })
+            .expectSatellite("NasaSatellite", "Satellite2", 10000, 62.24, 85,
+                new String[] { "DeviceA" })
+            .expectSatellite("NasaSatellite", "Satellite3", 10000, 12.24, 85,
+                new String[] { "DeviceA" },
+                new DummyConnection[] {
+                    new DummyConnection("DeviceA", LocalTime.of(0, 0), LocalTime.of(6, 41), 390), //
+                })
+            .expectSatellite("NasaSatellite", "Satellite4", 10000, 11.24, 85,
+                new String[] { "DeviceA" },
+                new DummyConnection[] {
+                    new DummyConnection("DeviceA", LocalTime.of(12, 30), LocalTime.of(19, 11), 390), //
+                })
+            .expectDevice("HandheldDevice", "DeviceA", 30, false, new LocalTime[][] { { LocalTime.of(0, 0), LocalTime.of(6, 40) }, { LocalTime.of(12, 30), LocalTime.of(19, 10) } })
+            .toString();
+
+        TestHelper plan = new TestHelper()
+            .createDevice("HandheldDevice", "DeviceA", 30)
+            .createSatellite("NasaSatellite", "Satellite1", 10000, 30)
+            .createSatellite("NasaSatellite", "Satellite2", 10000, 50)
+            .createSatellite("NasaSatellite", "Satellite3", 10000, 0)
+            .createSatellite("NasaSatellite", "Satellite4", 10000, 359)
+            .scheduleDeviceActivation("DeviceA", LocalTime.of(0, 0), 400)
+            .scheduleDeviceActivation("DeviceA", LocalTime.of(12, 30), 400)
+            .showWorldState(initialWorldState)
+            .simulate(720)
+            .showWorldState(afterHalfADay)
+            .simulate(720)
             .showWorldState(afterADay);
         plan.executeTestPlan();
     }
