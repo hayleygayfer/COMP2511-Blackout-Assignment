@@ -4,10 +4,10 @@ import java.time.*;
 import org.json.JSONObject;
 
 public class Connection {
-    Satellite connectedSatellite;
-    Device connectedDevice;
-    LocalTime startTime;
-    LocalTime endTime;
+    private Satellite connectedSatellite;
+    private Device connectedDevice;
+    private LocalTime startTime;
+    private LocalTime endTime;
 
     public Connection(Device connectedDevice, Satellite connectedSatellite) {
         this.connectedDevice = connectedDevice;
