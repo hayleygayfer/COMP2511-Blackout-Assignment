@@ -1,12 +1,16 @@
 package unsw.blackout;
 
+import org.json.JSONObject;
+import org.json.JSONArray;
+import java.util.*;
+
 public class Satellite {
     // General fields
     private double height;
     private String id;
     private double position;
-    private String[] possibleConnections;
-    private double velocity;
+    private ArrayList<Device> possibleConnections;
+    private ArrayList<Connection> connections;
 
     // Constructor with no arguments
     public Satellite() {
@@ -21,95 +25,39 @@ public class Satellite {
      * @param id
      * @param position
      */
-    public Satellite(double height, String id, double position) {
+    public Satellite(String id, double height, double position) {
         this.height = height;
         this.id = id;
         this.position = position;
     }
 
-    // SETTERS
-
-    /**
-     * 
-     * @param height
-     */
-    public void setHeight(double height) {
-        this.height = height;
-    }
-
-    /**
-     * 
-     * @param position
-     */
-    public void setPosition(double position) {
-        this.position = position;
-    }
-
-    /**
-     * 
-     * @param id
-     */
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    /**
-     * 
-     * @param velocity
-     */
-    public void setVelocity(double velocity) {
-        this.velocity = velocity;
-    }
-
-    /**
-     * 
-     * @param possibleConnections
-     */
-    public void setPossibleConnections(String[] possibleConnections) {
-        this.possibleConnections = possibleConnections;
-    }
-
-    // GETTERS
-
-    /**
-     * 
-     * @return height
-     */
-    public double getHeight() {
-        return height;
-    }
-
-    /**
-     * 
-     * @return position
-     */
-    public double getPosition() {
-        return position;
-    }
-
-    /**
-     * 
-     * @return id
-     */
     public String getId() {
         return id;
     }
 
-    /**
-     * 
-     * @return velocity
-     */
-    public double getVelocity() {
-        return velocity;
+    public JSONObject createJSON() {
+        JSONObject satellite = new JSONObject();
+        JSONArray connections = new JSONArray();
+        JSONArray possibleConnections = new JSONArray();
+
+        for (Connection connection : this.connections) {
+            JSONObject JSONConnection = connection.createJSON();
+            connections.put(JSONConnection);
+        }
+
+        for (Device device : this.possibleConnections) {
+            possibleConnections.put(device.getId());
+        }
+
+        satellite.put("connections", connections);
+        satellite.put("height", height);
+        satellite.put("id", id);
+        satellite.put("position", position);
+        satellite.put("possibleConnections", possibleConnections);
+
+        return satellite;
     }
 
-    /**
-     * 
-     * @return possible connections (String[])
-     */
-    public String[] getPossibleConnections() {
-        return possibleConnections;
-    }
 }
 
 

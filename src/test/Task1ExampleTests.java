@@ -27,6 +27,7 @@ public class Task1ExampleTests {
             .expectDevice("LaptopDevice", "DeviceB", 180)
             .expectDevice("DesktopDevice", "DeviceC", 330)
             .toString();
+        System.out.println(initialWorldState);
 
         // this is what we call the 'builder' pattern, effectively we scope out a test
         // plan in this case

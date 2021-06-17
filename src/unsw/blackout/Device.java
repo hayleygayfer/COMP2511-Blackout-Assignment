@@ -1,6 +1,8 @@
 package unsw.blackout;
 
 import java.util.ArrayList;
+import org.json.JSONObject;
+import org.json.JSONArray;
 
 public class Device {
     private String id;
@@ -21,43 +23,32 @@ public class Device {
         this.activationPeriods = new ArrayList<ActivationPeriod>();
     }
 
-    // SETTERS
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setPosition(double position) {
-        this.position = position;
-    }
-
-    public void setIsConnected(boolean isConnected) {
-        this.isConnected = isConnected;
-    }
-
-    public void addActivationPeriod(ActivationPeriod activationPeriod) {
-        activationPeriods.add(activationPeriod);
-    }
-
-    public void removeActivationPeriod(ActivationPeriod activationPeriod) {
-        activationPeriods.remove(activationPeriod);
-    }
-
-    public void clearActivationPeriods() {
-        activationPeriods.clear();
-    }
-
-    // GETTERS
-
     public String getId() {
         return id;
     }
 
-    public double getPosition() {
-        return position;
+    public void setPosition(double newPosition) {
+        this.position = newPosition;
     }
 
-    public boolean getIsConnected() {
-        return isConnected;
+    public void addActivationPeriod(ActivationPeriod newActivationPeriod) {
+        activationPeriods.add(newActivationPeriod);
+    }
+
+    public JSONObject createJSON() {
+        JSONObject device = new JSONObject();
+        JSONArray activationPeriods = new JSONArray();
+        
+        for (ActivationPeriod activationPeriod : this.activationPeriods) {
+            JSONObject JSONActivationPeriod = activationPeriod.createJSON();
+            activationPeriods.put(JSONActivationPeriod);
+        }
+
+        device.put("activationPeriods", activationPeriods);
+        device.put("id", id);
+        device.put("isConnected", isConnected);
+        device.put("position", position);
+
+        return device;
     }
 }

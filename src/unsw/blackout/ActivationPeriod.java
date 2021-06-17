@@ -1,6 +1,7 @@
 package unsw.blackout;
 
 import java.time.LocalTime;
+import org.json.JSONObject;
 
 public class ActivationPeriod {
     //change these types later
@@ -28,8 +29,11 @@ public class ActivationPeriod {
         return startTime.plusMinutes(durationInMinutes);
     }
 
-    public String getString() {
-        return "startTime: " + startTime + "\nendTime: " + getEndTime() + "\n";
+    public JSONObject createJSON() {
+        JSONObject activationPeriod = new JSONObject();
+        activationPeriod.put("endTime", this.getEndTime().toString());
+        activationPeriod.put("startTime", startTime.toString());
+        return activationPeriod;
     }
 
     public boolean isDuring(LocalTime currentTime) {
