@@ -8,6 +8,11 @@ public class HandheldDevice extends Device {
     }
 
     @Override
+    public String getType() {
+        return "HandheldDevice";
+    }
+
+    @Override
     public JSONObject createJSON() {
         return super.createJSON().put("type", "HandheldDevice");
     }

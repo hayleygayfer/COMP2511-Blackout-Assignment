@@ -12,12 +12,10 @@ public class Satellite {
     private ArrayList<Device> possibleConnections;
     private ArrayList<Connection> connections;
 
-    // Constructor with no arguments
-    public Satellite() {
-        this.height = 10000;
-        this.id = "Satellite";
-        this.position = 10;
-    }
+    // specialised fields
+    private double orbitSpeed;
+    private ArrayList<SupportedDevice> supportedDevices;
+    private int connectionTimeInMinutes;
 
     /**
      * 
@@ -29,10 +27,90 @@ public class Satellite {
         this.height = height;
         this.id = id;
         this.position = position;
+        this.possibleConnections = new ArrayList<Device>();
+        this.connections = new ArrayList<Connection>();
+        this.orbitSpeed = 1000;
+        this.supportedDevices = new ArrayList<SupportedDevice>();
     }
 
     public String getId() {
         return id;
+    }
+
+    public void clearConnectableDevices() {
+        possibleConnections.clear();
+    }
+
+    public boolean checkDeviceConnectability(Device device) {
+        if (MathsHelper.satelliteIsVisibleFromDevice(position, height, device.getPosition())) {
+            if (!possibleConnections.contains(device)) {
+                possibleConnections.add(device);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public double getVelocity() {
+        return this.orbitSpeed / 60;
+    }
+
+    public void setOrbitSpeed(double orbitSpeed) {
+        this.orbitSpeed = orbitSpeed;
+    }
+
+    public void setConnectionTime(int minutes) {
+        this.connectionTimeInMinutes = minutes;
+    }
+
+    public void addSupportedDevice(String type, double maxConnections) {
+        SupportedDevice newSupportedDevice = new SupportedDevice(type, maxConnections);
+        supportedDevices.add(newSupportedDevice);
+    }
+
+    public ArrayList<SupportedDevice> getSupportedDevices() {
+        return this.supportedDevices;
+    }
+
+    public int getNumConnections() {
+        return connections.size();
+    }
+
+    public ArrayList<Device> getConnectedDevices() {
+        ArrayList<Device> connectedDevices = new ArrayList<Device>();
+        for (Connection connection : this.connections) {
+            connectedDevices.add(connection.getConnectedDevice());
+        }
+        return connectedDevices;
+    }
+
+    public void connectToDevice(Device newDeviceConnection) {
+        for (SupportedDevice device : supportedDevices) {
+            // see if the device type is supported
+            if (newDeviceConnection.getType().equals(device.getType())) {
+                // get the number of devices of that type already connected
+                int numDeviceTypeConnections = 0;
+                for (Connection connection : this.connections) {
+                    if (newDeviceConnection.getType().equals(connection.getDeviceType())) {
+                        numDeviceTypeConnections++;
+                    }
+                }
+                // check if there is enough space for a new connection
+                if (numDeviceTypeConnections < device.getMaxConnections()) {
+                    Connection newConnection = new Connection(newDeviceConnection, this);
+                    connections.add(newConnection);
+                }
+            }
+        }
+    }
+
+    public void removeConnection(Device device) {
+        for (Connection connection : this.connections) {
+            if (connection.getConnectedDevice().equals(device)) {
+                connections.remove(connection);
+                return;
+            }
+        }
     }
 
     public JSONObject createJSON() {
@@ -52,12 +130,12 @@ public class Satellite {
         satellite.put("connections", connections);
         satellite.put("height", height);
         satellite.put("id", id);
+        satellite.put("velocity", this.getVelocity());
         satellite.put("position", position);
         satellite.put("possibleConnections", possibleConnections);
 
         return satellite;
     }
-
 }
 
 

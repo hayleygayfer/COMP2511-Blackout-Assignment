@@ -11,12 +11,6 @@ public class Device {
     // make this more specific later
     private ArrayList<ActivationPeriod> activationPeriods;
 
-    public Device() {
-        this.id = "Device";
-        this.position = 10;
-        this.activationPeriods = new ArrayList<ActivationPeriod>();
-    }
-
     public Device(String id, double position) {
         this.id = id;
         this.position = position;
@@ -25,6 +19,14 @@ public class Device {
 
     public String getId() {
         return id;
+    }
+
+    public double getPosition() {
+        return position;
+    }
+
+    public String getType() {
+        return "";
     }
 
     public void setPosition(double newPosition) {

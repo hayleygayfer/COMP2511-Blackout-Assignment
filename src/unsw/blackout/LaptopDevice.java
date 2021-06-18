@@ -8,6 +8,11 @@ public class LaptopDevice extends Device {
     }
 
     @Override
+    public String getType() {
+        return "LaptopDevice";
+    }
+
+    @Override
     public JSONObject createJSON() {
         return super.createJSON().put("type", "LaptopDevice");
     }

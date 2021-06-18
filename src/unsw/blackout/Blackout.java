@@ -8,39 +8,33 @@ import org.json.JSONArray;
 import java.util.*;
 
 public class Blackout {
-    private ArrayList<Device> devices;
-    private ArrayList<Satellite> satellites;
-
-    public Blackout() {
-        devices = new ArrayList<Device>();
-        satellites = new ArrayList<Satellite>();
-    }
+    private ArrayList<Device> devices = new ArrayList<Device>();
+    private ArrayList<Satellite> satellites = new ArrayList<Satellite>();
 
     public void createDevice(String id, String type, double position) {
-        if (type == "DesktopDevice") {
+        if (type.equals("DesktopDevice")) {
             DesktopDevice newDesktopDevice = new DesktopDevice(id, position);
             devices.add(newDesktopDevice);
-        } else if (type == "HandheldDevice") {
+        } else if (type.equals("HandheldDevice")) {
             HandheldDevice newHandheldDevice = new HandheldDevice(id, position);
             devices.add(newHandheldDevice);
-        } else if (type == "LaptopDevice") {
+        } else if (type.equals("LaptopDevice")) {
             LaptopDevice newLaptopDevice = new LaptopDevice(id, position);
             devices.add(newLaptopDevice);
         }
-
     }
 
     public void createSatellite(String id, String type, double height, double position) {
-        if (type == "NasaSatellite") {
+        if (type.equals("NasaSatellite")) {
             NasaSatellite newNasaSatellite = new NasaSatellite(id, height, position);
             satellites.add(newNasaSatellite);
-        } else if (type == "SovietSatellite") {
+        } else if (type.equals("SovietSatellite")) {
             SovietSatellite newSovietSatellite = new SovietSatellite(id, height, position);
             satellites.add(newSovietSatellite);
-        } else if (type == "SpaceXSatellite") {
+        } else if (type.equals("SpaceXSatellite")) {
             SpaceXSatellite newSpaceXSatellite = new SpaceXSatellite(id, height, position);
             satellites.add(newSpaceXSatellite);
-        } else if (type == "BlueOriginSatellite") {
+        } else if (type.equals("BlueOriginSatellite")) {
             BlueOriginSatellite newBlueOriginSatellite = new BlueOriginSatellite(id, height, position);
             satellites.add(newBlueOriginSatellite);
         }
@@ -49,7 +43,7 @@ public class Blackout {
     public void scheduleDeviceActivation(String deviceId, LocalTime start, int durationInMinutes) {
         ActivationPeriod newActivationPeriod = new ActivationPeriod(start, durationInMinutes);
         for (Device device : devices) {
-            if (device.getId() == deviceId) {
+            if (device.getId().equals(deviceId)) {
                 device.addActivationPeriod(newActivationPeriod);
             }
         }
@@ -57,7 +51,7 @@ public class Blackout {
 
     public void removeSatellite(String id) {
         for (Satellite satellite : satellites) {
-            if (satellite.getId() == id) {
+            if (satellite.getId().equals(id)) {
                 satellites.remove(satellite);
             }
         }
@@ -65,7 +59,7 @@ public class Blackout {
 
     public void removeDevice(String id) {
         for (Device device : devices) {
-            if (device.getId() == id) {
+            if (device.getId().equals(id)) {
                 devices.remove(device);
             }
         }
@@ -73,13 +67,21 @@ public class Blackout {
 
     public void moveDevice(String id, double newPos) {
         for (Device device : devices) {
-            if (device.getId() == id) {
+            if (device.getId().equals(id)) {
                 device.setPosition(newPos);
             }
         }
     }
 
     public JSONObject showWorldState() {
+        // update possible connections
+        for (Satellite satellite : this.satellites) {
+            satellite.clearConnectableDevices();
+            for (Device device : this.devices) {
+                satellite.checkDeviceConnectability(device);
+            }
+        }
+
         JSONObject result = new JSONObject();
         JSONArray devices = new JSONArray();
         JSONArray satellites = new JSONArray();
@@ -96,10 +98,6 @@ public class Blackout {
 
         result.put("devices", devices);
         result.put("satellites", satellites);
-
-        System.out.println(devices.toString());
-        System.out.println(satellites.toString());
-
 
         // TODO: you'll want to replace this for Task2
         result.put("currentTime", LocalTime.of(0, 0));

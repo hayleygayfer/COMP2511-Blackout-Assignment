@@ -10,6 +10,13 @@
             "name": "Launch Cli",
             "request": "launch",
             "mainClass": "unsw.blackout.Cli",
+            "projectName": "21T2-cs2511-assignment_9a61670b"
+        },
+        {
+            "type": "java",
+            "name": "Launch Cli",
+            "request": "launch",
+            "mainClass": "unsw.blackout.Cli",
             "projectName": "21T2-cs2511-assignment1_3895ac08"
         }
     ]

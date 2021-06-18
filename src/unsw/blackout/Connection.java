@@ -12,7 +12,14 @@ public class Connection {
     public Connection(Device connectedDevice, Satellite connectedSatellite) {
         this.connectedDevice = connectedDevice;
         this.connectedSatellite = connectedSatellite;
+    }
 
+    public String getDeviceType() {
+        return connectedDevice.getType();
+    }
+
+    public Device getConnectedDevice() {
+        return connectedDevice;
     }
 
     public int getMinutesActive() {
