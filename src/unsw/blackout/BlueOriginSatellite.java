@@ -2,6 +2,8 @@ package unsw.blackout;
 
 import org.json.JSONObject;
 
+import java.time.LocalTime;
+
 public class BlueOriginSatellite extends Satellite {
     private int maxTotalDevices;
 
@@ -16,9 +18,9 @@ public class BlueOriginSatellite extends Satellite {
     }
 
     @Override
-    public void connectToDevice(Device newDeviceConnection) {
+    public void connectToDevice(Device newDeviceConnection, LocalTime time) {
         if (super.getNumConnections() < maxTotalDevices) {
-            super.connectToDevice(newDeviceConnection);
+            super.connectToDevice(newDeviceConnection, time);
         } 
     }
 

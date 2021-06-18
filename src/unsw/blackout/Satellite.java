@@ -4,6 +4,8 @@ import org.json.JSONObject;
 import org.json.JSONArray;
 import java.util.*;
 
+import java.time.LocalTime;
+
 public class Satellite {
     // General fields
     private double height;
@@ -59,6 +61,18 @@ public class Satellite {
         this.orbitSpeed = orbitSpeed;
     }
 
+    public void moveSatellite() {
+        position = position + this.getVelocity();
+    }
+
+    public void setPosition(double position) {
+        this.position = position;
+    }
+
+    public double getPosition() {
+        return this.position;
+    }
+
     public void setConnectionTime(int minutes) {
         this.connectionTimeInMinutes = minutes;
     }
@@ -84,7 +98,9 @@ public class Satellite {
         return connectedDevices;
     }
 
-    public void connectToDevice(Device newDeviceConnection) {
+    public void connectToDevice(Device newDeviceConnection, LocalTime time) {
+        // check to see if device is activated
+        if (!newDeviceConnection.isActivated(time)) return;
         for (SupportedDevice device : supportedDevices) {
             // see if the device type is supported
             if (newDeviceConnection.getType().equals(device.getType())) {
@@ -99,6 +115,7 @@ public class Satellite {
                 if (numDeviceTypeConnections < device.getMaxConnections()) {
                     Connection newConnection = new Connection(newDeviceConnection, this);
                     connections.add(newConnection);
+                    newDeviceConnection.setConnection(true);
                 }
             }
         }
@@ -108,8 +125,16 @@ public class Satellite {
         for (Connection connection : this.connections) {
             if (connection.getConnectedDevice().equals(device)) {
                 connections.remove(connection);
+                device.setConnection(false);
                 return;
             }
+        }
+    }
+
+    public void clearConnections() {
+        for (Connection connection : this.connections) {
+            connections.remove(connection);
+            connection.getConnectedDevice().setConnection(false);
         }
     }
 

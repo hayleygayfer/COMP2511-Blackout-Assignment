@@ -10,6 +10,7 @@ import java.util.*;
 public class Blackout {
     private ArrayList<Device> devices = new ArrayList<Device>();
     private ArrayList<Satellite> satellites = new ArrayList<Satellite>();
+    private LocalTime currentTime = LocalTime.of(0,0);
 
     public void createDevice(String id, String type, double position) {
         if (type.equals("DesktopDevice")) {
@@ -99,14 +100,24 @@ public class Blackout {
         result.put("devices", devices);
         result.put("satellites", satellites);
 
-        // TODO: you'll want to replace this for Task2
-        result.put("currentTime", LocalTime.of(0, 0));
+        result.put("currentTime", currentTime);
 
         return result;
 
     }
 
     public void simulate(int tickDurationInMinutes) {
-        // TODO:
+        for (int i = 0; i < tickDurationInMinutes; i++) {
+            currentTime.plusMinutes(1);
+
+            for (Satellite satellite : this.satellites) {
+                satellite.moveSatellite();
+                satellite.clearConnectableDevices();
+                satellite.clearConnections();
+                for (Device device : this.devices) {
+                    if (satellite.checkDeviceConnectability(device)) satellite.connectToDevice(device, currentTime);
+                }
+            }
+        }
     }
 }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
+import java.time.LocalTime;
+
 public class Device {
     private String id;
     private double position;
@@ -15,6 +17,7 @@ public class Device {
         this.id = id;
         this.position = position;
         this.activationPeriods = new ArrayList<ActivationPeriod>();
+        this.isConnected = false;
     }
 
     public String getId() {
@@ -35,6 +38,17 @@ public class Device {
 
     public void addActivationPeriod(ActivationPeriod newActivationPeriod) {
         activationPeriods.add(newActivationPeriod);
+    }
+
+    public boolean isActivated(LocalTime time) {
+        for (ActivationPeriod period : activationPeriods) {
+            if (period.isDuring(time)) return true;
+        }
+        return false;
+    }
+
+    public void setConnection(boolean isConnected) {
+        this.isConnected = isConnected;
     }
 
     public JSONObject createJSON() {
