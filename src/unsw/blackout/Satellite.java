@@ -100,7 +100,9 @@ public class Satellite {
 
     public void connectToDevice(Device newDeviceConnection, LocalTime time) {
         // check to see if device is activated
-        if (!newDeviceConnection.isActivated(time)) return;
+        if (!newDeviceConnection.isActivated(time)) {
+            return;
+        }
         for (SupportedDevice device : supportedDevices) {
             // see if the device type is supported
             if (newDeviceConnection.getType().equals(device.getType())) {

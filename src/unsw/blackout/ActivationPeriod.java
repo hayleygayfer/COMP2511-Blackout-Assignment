@@ -37,7 +37,10 @@ public class ActivationPeriod {
     }
 
     public boolean isDuring(LocalTime currentTime) {
-        if (currentTime.isAfter(startTime) && currentTime.isBefore(getEndTime())) return true;
-        else return false;
+        if (currentTime.isAfter(startTime) && currentTime.isBefore(getEndTime())) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

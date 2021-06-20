@@ -108,7 +108,7 @@ public class Blackout {
 
     public void simulate(int tickDurationInMinutes) {
         for (int i = 0; i < tickDurationInMinutes; i++) {
-            currentTime.plusMinutes(1);
+            currentTime = currentTime.plusMinutes(1);
 
             for (Satellite satellite : this.satellites) {
                 satellite.moveSatellite();
