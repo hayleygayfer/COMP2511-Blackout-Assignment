@@ -9,7 +9,7 @@ public class SovietSatellite extends Satellite {
 
     public SovietSatellite(String id, double height, double position) {
         super(id, height, position);
-        super.setOrbitSpeed(6000);
+        super.setVelocity(6000.0 / 60.0);
         super.addSupportedDevice("LaptopDevice", Double.POSITIVE_INFINITY);
         super.addSupportedDevice("DesktopDevice", Double.POSITIVE_INFINITY);
     }

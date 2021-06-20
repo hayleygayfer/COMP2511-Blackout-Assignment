@@ -9,11 +9,11 @@ public class BlueOriginSatellite extends Satellite {
 
     public BlueOriginSatellite(String id, double height, double position) {
         super(id, height, position);
-        super.setOrbitSpeed(8500);
         super.addSupportedDevice("DesktopDevice", 2);
         super.addSupportedDevice("HandheldDevice", Double.POSITIVE_INFINITY);
         super.addSupportedDevice("LaptopDevice", 5);
         super.setConnectionTime(0);
+        super.setVelocity(8500.0 / 60.0);
         this.maxTotalDevices = 10;
     }
 

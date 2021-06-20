@@ -112,10 +112,10 @@ public class Blackout {
 
             for (Satellite satellite : this.satellites) {
                 satellite.moveSatellite();
-                satellite.clearConnectableDevices();
-                satellite.clearConnections();
                 for (Device device : this.devices) {
-                    if (satellite.checkDeviceConnectability(device)) satellite.connectToDevice(device, currentTime);
+                    if (satellite.checkDeviceConnectability(device)) {
+                        satellite.connectToDevice(device, currentTime);
+                    }
                 }
             }
         }

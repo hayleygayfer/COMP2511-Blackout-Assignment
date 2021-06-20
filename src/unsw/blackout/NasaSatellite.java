@@ -9,12 +9,12 @@ public class NasaSatellite extends Satellite {
 
     public NasaSatellite(String id, double height, double position) {
         super(id, height, position);
-        super.setOrbitSpeed(5100);
         // add all supported devices
         super.addSupportedDevice("DesktopDevice", Double.POSITIVE_INFINITY);
         super.addSupportedDevice("HandheldDevice", Double.POSITIVE_INFINITY);
         super.addSupportedDevice("LaptopDevice", Double.POSITIVE_INFINITY);
         super.setConnectionTime(10);
+        super.setVelocity(5100.0 / 60.0);
         this.maxTotalDevices = 6;
     }
 

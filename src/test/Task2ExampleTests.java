@@ -27,6 +27,8 @@ public class Task2ExampleTests {
                 new LocalTime[][] { { LocalTime.of(0, 0), LocalTime.of(5, 0) } })
             .toString();
 
+        System.out.println(initialWorldState);
+
         // then simulates for a full day (1440 mins)
         String afterADay = new ResponseHelper(LocalTime.of(0, 0))
             .expectSatellite("NasaSatellite", "Satellite1", 10000, 352.24, 85,
@@ -41,6 +43,8 @@ public class Task2ExampleTests {
             .expectDevice("DesktopDevice", "DeviceC", 330, false,
                 new LocalTime[][] { { LocalTime.of(0, 0), LocalTime.of(5, 0) } })
             .toString();
+
+        System.out.println(afterADay);
 
         TestHelper plan = new TestHelper().createDevice("HandheldDevice", "DeviceA", 30)
             .createDevice("LaptopDevice", "DeviceB", 180)

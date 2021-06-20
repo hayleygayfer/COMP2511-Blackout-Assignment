@@ -15,7 +15,7 @@ public class Satellite {
     private ArrayList<Connection> connections;
 
     // specialised fields
-    private double orbitSpeed;
+    private double velocity;
     private ArrayList<SupportedDevice> supportedDevices;
     private int connectionTimeInMinutes;
 
@@ -31,7 +31,7 @@ public class Satellite {
         this.position = position;
         this.possibleConnections = new ArrayList<Device>();
         this.connections = new ArrayList<Connection>();
-        this.orbitSpeed = 1000;
+        this.velocity = 0;
         this.supportedDevices = new ArrayList<SupportedDevice>();
     }
 
@@ -54,15 +54,15 @@ public class Satellite {
     }
 
     public double getVelocity() {
-        return this.orbitSpeed / 60;
+        return velocity;
     }
 
-    public void setOrbitSpeed(double orbitSpeed) {
-        this.orbitSpeed = orbitSpeed;
+    public void setVelocity(double velocity) {
+        this.velocity = velocity;
     }
 
     public void moveSatellite() {
-        position = position + this.getVelocity();
+        position = (position + (this.getVelocity() / this.height)) % 360;
     }
 
     public void setPosition(double position) {
@@ -124,7 +124,6 @@ public class Satellite {
     public void removeConnection(Device device) {
         for (Connection connection : this.connections) {
             if (connection.getConnectedDevice().equals(device)) {
-                connections.remove(connection);
                 device.setConnection(false);
                 return;
             }
