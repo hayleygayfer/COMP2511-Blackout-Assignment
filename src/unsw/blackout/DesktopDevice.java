@@ -5,6 +5,7 @@ import org.json.JSONObject;
 public class DesktopDevice extends Device {
     public DesktopDevice(String id, double position) {
         super(id, position);
+        super.setConnectionTime(5);
     }
 
     @Override

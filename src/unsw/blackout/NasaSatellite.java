@@ -14,7 +14,7 @@ public class NasaSatellite extends Satellite {
         super.addSupportedDevice("HandheldDevice", Double.POSITIVE_INFINITY);
         super.addSupportedDevice("LaptopDevice", Double.POSITIVE_INFINITY);
         super.setConnectionTime(10);
-        super.setVelocity(5100.0 / 60.0);
+        super.setVelocity(85);
         this.maxTotalDevices = 6;
     }
 
@@ -22,11 +22,12 @@ public class NasaSatellite extends Satellite {
     public void connectToDevice(Device newDeviceConnection, LocalTime time) {
         if (super.getNumConnections() < maxTotalDevices) {
             super.connectToDevice(newDeviceConnection, time);
-        } else if (30 <= newDeviceConnection.getPosition() && newDeviceConnection.getPosition() <= 40) {
+        } else if (newDeviceConnection.getPosition() >= 30 && newDeviceConnection.getPosition() <= 40) {
             for (Device device : super.getConnectedDevices()) {
                 if (device.getPosition() > 40 || device.getPosition() < 30) {
-                    super.removeConnection(device);
+                    super.closeConnection(device, time);
                     super.connectToDevice(newDeviceConnection, time);
+                    return;
                 }
             }
         }

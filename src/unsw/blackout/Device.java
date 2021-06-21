@@ -12,12 +12,25 @@ public class Device {
     private boolean isConnected;
     // make this more specific later
     private ArrayList<ActivationPeriod> activationPeriods;
+    private int connectionTimeInMinutes;
 
     public Device(String id, double position) {
         this.id = id;
         this.position = position;
         this.activationPeriods = new ArrayList<ActivationPeriod>();
         this.isConnected = false;
+    }
+
+    public void setConnectionTime(int connectionTimeInMinutes) {
+        this.connectionTimeInMinutes = connectionTimeInMinutes;
+    }
+
+    public boolean isConnected() {
+        return isConnected;
+    }
+
+    public int getConnectionTime() {
+        return connectionTimeInMinutes;
     }
 
     public String getId() {
@@ -42,7 +55,9 @@ public class Device {
 
     public boolean isActivated(LocalTime time) {
         for (ActivationPeriod period : activationPeriods) {
-            if (period.isDuring(time)) return true;
+            if (period.isDuring(time)) {
+                return true;
+            }
         }
         return false;
     }

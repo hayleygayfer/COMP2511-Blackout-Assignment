@@ -57,12 +57,16 @@ public class Satellite {
         return velocity;
     }
 
+    public double getHeight() {
+        return height;
+    }
+
     public void setVelocity(double velocity) {
         this.velocity = velocity;
     }
 
     public void moveSatellite() {
-        position = (position + (this.getVelocity() / this.height)) % 360;
+        position = (position + (this.velocity / this.height)) % 360.0;
     }
 
     public void setPosition(double position) {
@@ -77,6 +81,10 @@ public class Satellite {
         this.connectionTimeInMinutes = minutes;
     }
 
+    public int getConnectionTime() {
+        return connectionTimeInMinutes;
+    }
+
     public void addSupportedDevice(String type, double maxConnections) {
         SupportedDevice newSupportedDevice = new SupportedDevice(type, maxConnections);
         supportedDevices.add(newSupportedDevice);
@@ -87,35 +95,43 @@ public class Satellite {
     }
 
     public int getNumConnections() {
-        return connections.size();
+        int connectionCount = 0;
+        for (Connection connection : this.connections) {
+            if (connection.isActive()) {
+                connectionCount++;
+            }
+        }
+        return connectionCount;
     }
 
     public ArrayList<Device> getConnectedDevices() {
         ArrayList<Device> connectedDevices = new ArrayList<Device>();
         for (Connection connection : this.connections) {
-            connectedDevices.add(connection.getConnectedDevice());
+            if (connection.isActive()) {
+                connectedDevices.add(connection.getConnectedDevice());
+            }
         }
         return connectedDevices;
     }
 
     public void connectToDevice(Device newDeviceConnection, LocalTime time) {
-        // check to see if device is activated
-        if (!newDeviceConnection.isActivated(time)) {
+        if (this.getConnectedDevices().contains(newDeviceConnection)) {
             return;
         }
+
         for (SupportedDevice device : supportedDevices) {
             // see if the device type is supported
             if (newDeviceConnection.getType().equals(device.getType())) {
                 // get the number of devices of that type already connected
                 int numDeviceTypeConnections = 0;
                 for (Connection connection : this.connections) {
-                    if (newDeviceConnection.getType().equals(connection.getDeviceType())) {
+                    if (newDeviceConnection.getType().equals(connection.getDeviceType()) && connection.isActive()) {
                         numDeviceTypeConnections++;
                     }
                 }
                 // check if there is enough space for a new connection
                 if (numDeviceTypeConnections < device.getMaxConnections()) {
-                    Connection newConnection = new Connection(newDeviceConnection, this);
+                    Connection newConnection = new Connection(newDeviceConnection, this, time);
                     connections.add(newConnection);
                     newDeviceConnection.setConnection(true);
                 }
@@ -123,10 +139,11 @@ public class Satellite {
         }
     }
 
-    public void removeConnection(Device device) {
+    public void closeConnection(Device device, LocalTime time) {
         for (Connection connection : this.connections) {
-            if (connection.getConnectedDevice().equals(device)) {
+            if (connection.getConnectedDevice().equals(device) && connection.isActive()) {
                 device.setConnection(false);
+                connection.endConnection(time);
                 return;
             }
         }
@@ -157,7 +174,7 @@ public class Satellite {
         satellite.put("height", height);
         satellite.put("id", id);
         satellite.put("velocity", this.getVelocity());
-        satellite.put("position", position);
+        satellite.put("position", Math.round(position * 100.0) / 100.0);
         satellite.put("possibleConnections", possibleConnections);
 
         return satellite;

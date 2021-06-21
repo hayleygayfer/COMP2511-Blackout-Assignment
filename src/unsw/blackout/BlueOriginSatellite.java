@@ -13,7 +13,7 @@ public class BlueOriginSatellite extends Satellite {
         super.addSupportedDevice("HandheldDevice", Double.POSITIVE_INFINITY);
         super.addSupportedDevice("LaptopDevice", 5);
         super.setConnectionTime(0);
-        super.setVelocity(8500.0 / 60.0);
+        super.setVelocity(141.66);
         this.maxTotalDevices = 10;
     }
 

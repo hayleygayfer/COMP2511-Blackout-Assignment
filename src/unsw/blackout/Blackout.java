@@ -87,10 +87,14 @@ public class Blackout {
         JSONArray devices = new JSONArray();
         JSONArray satellites = new JSONArray();
 
+        this.devices.sort(Comparator.comparing(Device::getId));
+
         for (Device device : this.devices) {
             JSONObject JSONDevice = device.createJSON();
             devices.put(JSONDevice);
         }
+
+        this.satellites.sort(Comparator.comparing(Satellite::getId));
 
         for (Satellite satellite : this.satellites) {
             JSONObject JSONSatellite = satellite.createJSON();
@@ -107,17 +111,31 @@ public class Blackout {
     }
 
     public void simulate(int tickDurationInMinutes) {
-        for (int i = 0; i < tickDurationInMinutes; i++) {
-            currentTime = currentTime.plusMinutes(1);
+        this.devices.sort(Comparator.comparing(Device::getId));
+        this.satellites.sort(Comparator.comparing(Satellite::getPosition));
 
+        for (int i = 0; i < tickDurationInMinutes; i++) {
             for (Satellite satellite : this.satellites) {
+                // move satellite and clear connectable devices
                 satellite.moveSatellite();
+                
+                // disconnect all devices that are no longer activated or leave range
+                for (Device device : satellite.getConnectedDevices()) {
+                    if (!device.isActivated(currentTime) || !satellite.checkDeviceConnectability(device)) {
+                        satellite.closeConnection(device, currentTime);
+                    }
+                }
+
                 for (Device device : this.devices) {
-                    if (satellite.checkDeviceConnectability(device)) {
+                    if (satellite.checkDeviceConnectability(device) && 
+                        device.isActivated(currentTime) && 
+                        !satellite.getConnectedDevices().contains(device) && 
+                        !device.isConnected()) {
                         satellite.connectToDevice(device, currentTime);
                     }
                 }
             }
+            currentTime = currentTime.plusMinutes(1);
         }
     }
 }

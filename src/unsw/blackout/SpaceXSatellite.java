@@ -7,7 +7,7 @@ public class SpaceXSatellite extends Satellite {
         super(id, height, position);
         super.addSupportedDevice("HandheldDevice", Double.POSITIVE_INFINITY);
         super.setConnectionTime(0);
-        super.setVelocity(3300.0 / 60.0);
+        super.setVelocity(55.5);
     }
 
     @Override
