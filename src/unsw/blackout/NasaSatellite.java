@@ -19,11 +19,22 @@ public class NasaSatellite extends Satellite {
     }
 
     @Override
+    /**
+     * @param newDeviceConnection
+     * @param time
+     * 
+     * overrides the connectToDevice method, checks if the number of connections is below the max, and if not
+     * if the potential Device connection is within the [30, 40] range, in range of the satellite, and there
+     * exists another connected Device that is outside of this range
+     * 
+     */
     public void connectToDevice(Device newDeviceConnection, LocalTime time) {
         if (super.getNumConnections() < maxTotalDevices) {
             super.connectToDevice(newDeviceConnection, time);
+        // check if device is within [30,40] range
         } else if (newDeviceConnection.getPosition() >= 30 && newDeviceConnection.getPosition() <= 40) {
             for (Device device : super.getConnectedDevices()) {
+                // check if connected device outside of [30,40] range exists
                 if (device.getPosition() > 40 || device.getPosition() < 30) {
                     super.closeConnection(device, time);
                     super.connectToDevice(newDeviceConnection, time);
@@ -34,6 +45,9 @@ public class NasaSatellite extends Satellite {
     }
 
     @Override
+    /**
+     * @return JSON object containing Satellite data and type
+     */
     public JSONObject createJSON() {
         JSONObject satellite = super.createJSON();
         satellite.put("type", "NasaSatellite");

@@ -9,11 +9,17 @@ public class DesktopDevice extends Device {
     }
 
     @Override
+    /**
+     * @return the type of Device "DesktopDevice"
+     */
     public String getType() {
         return "DesktopDevice";
     }
 
     @Override
+    /**
+     * @return a JSON object containing the Device data plus the type of device
+     */
     public JSONObject createJSON() {
         return super.createJSON().put("type", "DesktopDevice");
     }

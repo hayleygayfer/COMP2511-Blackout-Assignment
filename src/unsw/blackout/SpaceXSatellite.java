@@ -11,6 +11,9 @@ public class SpaceXSatellite extends Satellite {
     }
 
     @Override
+    /**
+     * @return JSON object containing satellite data and type
+     */
     public JSONObject createJSON() {
         JSONObject satellite = super.createJSON();
         satellite.put("type", "SpaceXSatellite");

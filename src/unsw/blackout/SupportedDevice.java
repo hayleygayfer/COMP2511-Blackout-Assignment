@@ -9,10 +9,18 @@ public class SupportedDevice {
         this.maxConnections = maxConnections;
     }
 
+    /**
+     * 
+     * @return the type of the Supported Device
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * 
+     * @return the maximum allowed connections for the supported device
+     */
     public double getMaxConnections() {
         return maxConnections;
     }

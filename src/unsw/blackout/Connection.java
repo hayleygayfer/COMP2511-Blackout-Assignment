@@ -18,23 +18,46 @@ public class Connection {
         this.isActive = true;
     }
 
+    /**
+     * 
+     * @return True or False depending on if the connection is still currently active, or has been closed
+     */
     public boolean isActive() {
         return isActive;
     }
 
+    /**
+     * 
+     * @return The type of device in the connection e.g. "Handheld"
+     */
     public String getDeviceType() {
         return connectedDevice.getType();
     }
 
+    /**
+     * 
+     * @return The Device object of the connected device
+     */
     public Device getConnectedDevice() {
         return connectedDevice;
     }
 
+    /**
+     * 
+     * @param endTime
+     * 
+     * Set the connection to inactive and set it's endTime to the given time
+     */
     public void endConnection(LocalTime endTime) {
         this.isActive = false;
         this.endTime = endTime;
     }
 
+    /**
+     * 
+     * @return the number of minutes the connection was active, taking into account the connection time of
+     * different satellites
+     */
     public int getMinutesActive() {
         Duration duration;
         duration = Duration.between(startTime, endTime); 
@@ -45,10 +68,15 @@ public class Connection {
             minutes -= connectedDevice.getConnectionTime() * 2;
         }
 
+        // Ensure no negative times
         if (minutes < 0) minutes = 0;
         return minutes;
     }
 
+    /**
+     * 
+     * @return A JSON object containing all the Connection data
+     */
     public JSONObject createJSON() {
         JSONObject connection = new JSONObject();
         connection.put("deviceId", connectedDevice.getId());

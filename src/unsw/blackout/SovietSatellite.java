@@ -16,6 +16,12 @@ public class SovietSatellite extends Satellite {
     }
 
     @Override
+    /**
+     * @param newDeviceConnection
+     * @param time
+     * 
+     * overridden method that takes into account maximum connections allowed when connecting to a new device
+     */
     public void connectToDevice(Device newDeviceConnection, LocalTime time) {
         if (super.getNumConnections() < maxTotalDevices) {
             super.connectToDevice(newDeviceConnection, time);
@@ -26,6 +32,10 @@ public class SovietSatellite extends Satellite {
     }
 
     @Override 
+    /**
+     * Override the super moveSatellite method in order to account for the ability to reverse velocity to stay
+     * within [140, 190]
+     */
     public void moveSatellite() {
         super.setPosition(super.getPosition() + (this.getVelocity() / super.getHeight()) % 360.0);
         if (super.getPosition() > 190) {
@@ -36,6 +46,9 @@ public class SovietSatellite extends Satellite {
     }
 
     @Override
+    /**
+     * @return JSON object containing satellite data and type
+     */
     public JSONObject createJSON() {
         JSONObject satellite = super.createJSON();
         satellite.put("type", "SovietSatellite");

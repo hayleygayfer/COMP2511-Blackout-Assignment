@@ -35,14 +35,28 @@ public class Satellite {
         this.supportedDevices = new ArrayList<SupportedDevice>();
     }
 
+    /**
+     * 
+     * @return a String containing the Satellite id
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * Clear all connectable devices (Used in blackout to 'refresh' the satellite's potential connections)
+     */
     public void clearConnectableDevices() {
         possibleConnections.clear();
     }
 
+    /**
+     * 
+     * @param device
+     * @return a boolean determining whether a device is visible from the satellite or not
+     * 
+     * If a device is visible and is not currently contained within the possibleConnections, it adds it
+     */
     public boolean checkDeviceConnectability(Device device) {
         if (MathsHelper.satelliteIsVisibleFromDevice(position, height, device.getPosition())) {
             if (!possibleConnections.contains(device)) {
@@ -53,47 +67,102 @@ public class Satellite {
         return false;
     }
 
+    /**
+     * 
+     * @return the velocity of the satellite
+     */
     public double getVelocity() {
         return velocity;
     }
 
+    /**
+     * @return the height of the satellite
+     */
     public double getHeight() {
         return height;
     }
 
+    /**
+     * 
+     * @param velocity
+     * 
+     * Set the velocity
+     */
     public void setVelocity(double velocity) {
         this.velocity = velocity;
     }
 
+    /**
+     * Move the satellite by altering the position according to the velocity and height, and ensure
+     * the position wraps around to 0 from 360
+     */
     public void moveSatellite() {
         position = (position + (this.velocity / this.height)) % 360.0;
     }
 
+    /**
+     * 
+     * @param position
+     * 
+     * Set the position
+     */
     public void setPosition(double position) {
         this.position = position;
     }
 
+    /**
+     * 
+     * @return the position of the satellite
+     */
     public double getPosition() {
         return this.position;
     }
 
+    /**
+     * 
+     * @param minutes
+     * 
+     * Get the connectionTime of the Satellite in minutes, this is relevant to the children classes
+     */
     public void setConnectionTime(int minutes) {
         this.connectionTimeInMinutes = minutes;
     }
 
+    /**
+     * 
+     * @return the connection time in minutes
+     */
     public int getConnectionTime() {
         return connectionTimeInMinutes;
     }
 
+    /**
+     * 
+     * @param type
+     * @param maxConnections
+     * 
+     * Add a supportedDevice to the list of supported devices for the satellite, containing the type and max connections
+     * Relevant for the children classes e.g. BlueOriginSatellite > addSupportedDevice("Desktop", 2)
+     */
     public void addSupportedDevice(String type, double maxConnections) {
         SupportedDevice newSupportedDevice = new SupportedDevice(type, maxConnections);
         supportedDevices.add(newSupportedDevice);
     }
 
+    /**
+     * 
+     * @return a list of supported devices
+     */
     public ArrayList<SupportedDevice> getSupportedDevices() {
         return this.supportedDevices;
     }
 
+    /**
+     * 
+     * @return the number of devices the satellite is currently connected to
+     * 
+     * Used for monitoring that the number of connections for a satellite is below the maximum
+     */
     public int getNumConnections() {
         int connectionCount = 0;
         for (Connection connection : this.connections) {
@@ -104,6 +173,10 @@ public class Satellite {
         return connectionCount;
     }
 
+    /**
+     * 
+     * @return a list of Device objects containing devices that are currently connected to the satellite
+     */
     public ArrayList<Device> getConnectedDevices() {
         ArrayList<Device> connectedDevices = new ArrayList<Device>();
         for (Connection connection : this.connections) {
@@ -114,6 +187,13 @@ public class Satellite {
         return connectedDevices;
     }
 
+    /**
+     * 
+     * @param newDeviceConnection
+     * @param time
+     * 
+     * Create a new Connection to a new Device started at the given time
+     */
     public void connectToDevice(Device newDeviceConnection, LocalTime time) {
         if (this.getConnectedDevices().contains(newDeviceConnection)) {
             return;
@@ -139,6 +219,13 @@ public class Satellite {
         }
     }
 
+    /**
+     * 
+     * @param device
+     * @param time
+     * 
+     * Set a connection to inactive (ended at the given time) and the given device to 'not connected'
+     */
     public void closeConnection(Device device, LocalTime time) {
         for (Connection connection : this.connections) {
             if (connection.getConnectedDevice().equals(device) && connection.isActive()) {
@@ -149,6 +236,9 @@ public class Satellite {
         }
     }
 
+    /**
+     * clear all current connections
+     */
     public void clearConnections() {
         for (Connection connection : this.connections) {
             connections.remove(connection);
@@ -156,6 +246,10 @@ public class Satellite {
         }
     }
 
+    /**
+     * 
+     * @return a JSON object containing the satellite data
+     */
     public JSONObject createJSON() {
         JSONObject satellite = new JSONObject();
         JSONArray connections = new JSONArray();

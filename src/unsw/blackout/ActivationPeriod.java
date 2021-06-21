@@ -8,6 +8,11 @@ public class ActivationPeriod {
     private LocalTime startTime;
     private int durationInMinutes;
 
+    /**
+     * 
+     * @param startTime
+     * @param durationInMinutes
+     */
     public ActivationPeriod(LocalTime startTime, int durationInMinutes) {
         this.startTime = startTime;
         this.durationInMinutes = durationInMinutes;
@@ -29,6 +34,10 @@ public class ActivationPeriod {
         return startTime.plusMinutes(durationInMinutes);
     }
 
+    /**
+     * 
+     * @return a JSON object containing the activationPeriod data
+     */
     public JSONObject createJSON() {
         JSONObject activationPeriod = new JSONObject();
         activationPeriod.put("endTime", this.getEndTime().toString());
@@ -36,6 +45,11 @@ public class ActivationPeriod {
         return activationPeriod;
     }
 
+    /**
+     * 
+     * @param currentTime
+     * @return True or False depending on whether a given time is within the activation period
+     */
     public boolean isDuring(LocalTime currentTime) {
         if (currentTime.equals(startTime) || currentTime.equals(getEndTime())) {
             return true;

@@ -18,6 +18,10 @@ public class BlueOriginSatellite extends Satellite {
     }
 
     @Override
+    /**
+     * Overridden super method to connect to a device that also checks if the number of connections is below
+     * the maximum for this Satellite
+     */
     public void connectToDevice(Device newDeviceConnection, LocalTime time) {
         if (super.getNumConnections() < maxTotalDevices) {
             super.connectToDevice(newDeviceConnection, time);
@@ -25,6 +29,9 @@ public class BlueOriginSatellite extends Satellite {
     }
 
     @Override
+    /**
+     * @return a JSON object containing this satellite's data, including it's type
+     */
     public JSONObject createJSON() {
         JSONObject satellite = super.createJSON();
         satellite.put("type", "BlueOriginSatellite");

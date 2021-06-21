@@ -12,6 +12,12 @@ public class Blackout {
     private ArrayList<Satellite> satellites = new ArrayList<Satellite>();
     private LocalTime currentTime = LocalTime.of(0,0);
 
+    /**
+     * 
+     * @param id
+     * @param type
+     * @param position
+     */
     public void createDevice(String id, String type, double position) {
         if (type.equals("DesktopDevice")) {
             DesktopDevice newDesktopDevice = new DesktopDevice(id, position);
@@ -25,6 +31,13 @@ public class Blackout {
         }
     }
 
+    /**
+     * 
+     * @param id
+     * @param type
+     * @param height
+     * @param position
+     */
     public void createSatellite(String id, String type, double height, double position) {
         if (type.equals("NasaSatellite")) {
             NasaSatellite newNasaSatellite = new NasaSatellite(id, height, position);
@@ -41,6 +54,12 @@ public class Blackout {
         }
     }
 
+    /**
+     * 
+     * @param deviceId
+     * @param start
+     * @param durationInMinutes
+     */
     public void scheduleDeviceActivation(String deviceId, LocalTime start, int durationInMinutes) {
         ActivationPeriod newActivationPeriod = new ActivationPeriod(start, durationInMinutes);
         for (Device device : devices) {
@@ -50,6 +69,10 @@ public class Blackout {
         }
     }
 
+    /**
+     * 
+     * @param id
+     */
     public void removeSatellite(String id) {
         for (Satellite satellite : satellites) {
             if (satellite.getId().equals(id)) {
@@ -58,6 +81,10 @@ public class Blackout {
         }
     }
 
+    /**
+     * 
+     * @param id
+     */
     public void removeDevice(String id) {
         for (Device device : devices) {
             if (device.getId().equals(id)) {
@@ -66,6 +93,11 @@ public class Blackout {
         }
     }
 
+    /**
+     * 
+     * @param id
+     * @param newPos
+     */
     public void moveDevice(String id, double newPos) {
         for (Device device : devices) {
             if (device.getId().equals(id)) {
@@ -74,6 +106,10 @@ public class Blackout {
         }
     }
 
+    /**
+     * 
+     * @return JSON object containing the WorldState
+     */
     public JSONObject showWorldState() {
         // update possible connections
         for (Satellite satellite : this.satellites) {
@@ -110,6 +146,12 @@ public class Blackout {
 
     }
 
+    /**
+     * 
+     * @param tickDurationInMinutes
+     * 
+     * Simulate the movement of Satellites and their connections to Devices over a period of time in minutes
+     */
     public void simulate(int tickDurationInMinutes) {
         this.devices.sort(Comparator.comparing(Device::getId));
         this.satellites.sort(Comparator.comparing(Satellite::getPosition));
@@ -129,12 +171,13 @@ public class Blackout {
                 for (Device device : this.devices) {
                     if (satellite.checkDeviceConnectability(device) && 
                         device.isActivated(currentTime) && 
-                        !satellite.getConnectedDevices().contains(device) && 
+                        !satellite.getConnectedDevices().contains(device) &&
                         !device.isConnected()) {
                         satellite.connectToDevice(device, currentTime);
                     }
                 }
             }
+
             currentTime = currentTime.plusMinutes(1);
         }
     }
